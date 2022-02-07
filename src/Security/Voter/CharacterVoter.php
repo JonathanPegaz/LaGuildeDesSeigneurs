@@ -19,7 +19,7 @@ class CharacterVoter extends Voter
         self::CHARACTER_INDEX,
     );
 
-    protected function supports($attribute, $subject)
+    protected function supports($attribute, $subject) :bool
     {
         if(null !== $subject) {
             return $subject instanceof Character && in_array($attribute, self::ATTRIBUTES);
