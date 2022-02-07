@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Table(name="characters")
- * @ORM\Entity(repositoryClass:CharacterRepository::class)
+ * @ORM\Entity(repositoryClass=CharacterRepository::class)
  */
 class Character
 {
@@ -62,6 +62,11 @@ class Character
      * @ORM\Column(type="datetime")
      */
     private $creation;
+
+    /**
+     * @ORM\Column(type="string", length=40)
+     */
+    private $identifier;
 
     public function getId(): ?int
     {
@@ -177,6 +182,18 @@ class Character
     public function setCreation(\DateTimeInterface $creation): self
     {
         $this->creation = $creation;
+
+        return $this;
+    }
+
+    public function getIdentifier(): ?string
+    {
+        return $this->identifier;
+    }
+
+    public function setIdentifier(string $identifier): self
+    {
+        $this->identifier = $identifier;
 
         return $this;
     }

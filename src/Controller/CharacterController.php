@@ -20,29 +20,37 @@ class CharacterController extends AbstractController
     }
 
     /**
-     * @Route("/character", name="character", methods={"GET","HEAD"})
+     * @Route("/character", name="character_redirect_index", methods={"GET","HEAD"})
      */
-    public function index():Response
-    {
-        return $this->json([
-            'message'=>'Welcome to controller',
-            'path' => 'src/Controller/CharacterController.php',
-        ]);
+    public function redirectIndex(){
+        return $this->redirectToRoute('character_index');
     }
-    /**
-     * @Route("/character/display", name="character_display", methods={"GET","HEAD"})
-     */
-    public function display() 
-    {
-        $character = new Character();
 
+    /**
+     * @Route("/character/index", name="character_index", methods={"GET","HEAD"})
+     */
+    public function index()
+    {
+        $this->denyAccessUnlessGranted('characterIndex', null);
+        $characters = $this->characterService->getAll();
+        return new JsonResponse($characters);
+    }
+
+    /**
+     * @Route("/character/display/{identifier}", name="character_display", requirements={"identifier": "^([a-z0-9]{40})$"}, methods={"GET","HEAD"})
+     */
+    public function display(Character $character) 
+    {
+        $this->denyAccessUnlessGranted('characterDisplay', $character);
         return new JsonResponse($character->toArray());
     }
+
     /**
      * @Route("/character/create", name="character_create", methods={"POST","HEAD"})
      */
     public function create() 
     {
+        $this->denyAccessUnlessGranted('characterCreate', null);
         $character = $this->characterService->create();
         return new JsonResponse($character->toArray());
     }
