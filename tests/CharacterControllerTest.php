@@ -8,10 +8,41 @@ use Response;
 class CharacterControllerTest extends WebTestCase
 {
     private $client;
+    private $content;
+    private static $identifier;
+
+    public function assertJsonResponse()
+    {
+        $response = $this->client->getResponse();
+        $this->content = json_decode($response->getContent(), true, 50);
+        //...
+    }
+    /**
+     * Asserts that 'identifier' is present in the Response
+    */
+    public function assertIdentifier()
+    {
+        $this->assertArrayHasKey('identifier', $this->content);
+    }
+    /**
+    * Defines identifier
+    */
+    public function defineIdentifier()
+    {
+        self::$identifier = $this->content['identifier'];
+    }
     
     public function setUp() : void
     {
         $this->client = static::createClient();
+    }
+
+    public function testCreate()
+    {
+        $this->client->request('POST', '/character/create');
+        $this->assertJsonResponse();
+        $this->defineIdentifier();
+        $this->assertIdentifier();
     }
 
     /**
@@ -37,9 +68,20 @@ class CharacterControllerTest extends WebTestCase
      */
     public function testDisplay()
     {
-        $this->client->request('GET', '/character/display/49b7a65437aa9ba14a6ca5b10066b19d762cea47');
+        $this->client->request('GET', '/character/display/' . self::$identifier);
 
-        $this->assertJsonReponse($this->client->getResponse());
+        $this->assertJsonResponse();
+        $this->assertIdentifier();
+    }
+
+    /**
+     * Tests modify
+     */
+    public function testModify()
+    {
+        $this->client->request('PUT', '/character/modify/' . self::$identifier);
+        $this->assertJsonResponse();
+        $this->assertIdentifier();
     }
 
     /**
@@ -77,4 +119,14 @@ class CharacterControllerTest extends WebTestCase
         $this->client->request('GET', '/character/display/49b7a65437aa9ba14a6ca5b10066b19d762error');
         $this->assertError404($this->client->getResponse()->getStatusCode());
     }
+
+    /**
+    * Tests delete
+    */
+    public function testDelete()
+    {
+        $this->client->request('DELETE', '/character/delete/' . self::$identifier);
+        $this->assertJsonResponse();
+    }
+
 }
