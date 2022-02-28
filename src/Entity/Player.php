@@ -3,9 +3,13 @@
 namespace App\Entity;
 
 use App\Repository\PlayerRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
+ * @ORM\Table(name="player")
  * @ORM\Entity(repositoryClass=PlayerRepository::class)
  */
 class Player
@@ -19,26 +23,50 @@ class Player
 
     /**
      * @ORM\Column(type="string", length=64)
+     * @Assert\NotBlank
+    * @Assert\Length(
+    *   min = 3,
+    *   max = 64,
+    *)
      */
     private $firstname;
 
     /**
      * @ORM\Column(type="string", length=64)
+     * @Assert\NotBlank
+    * @Assert\Length(
+    *   min = 3,
+    *   max = 64,
+    *)
      */
     private $lastname;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank
+    * @Assert\Length(
+    *   min = 3,
+    *   max = 255,
+    *)
      */
     private $email;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
+     * @Assert\NotBlank
+    * @Assert\Length(
+    *   min = 3,
+    *   max = 64,
+    *)
      */
     private $mirian;
 
     /**
      * @ORM\Column(type="datetime")
+     * @Assert\Length(
+    *   min = 5,
+    *   max = 128,
+    *)
      */
     private $creation;
 
@@ -51,6 +79,16 @@ class Player
      * @ORM\Column(type="string", length=40)
      */
     private $identifier;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Character::class, mappedBy="player")
+     */
+    private $characters;
+
+    public function __construct()
+    {
+        $this->characters = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -144,5 +182,35 @@ class Player
     public function toArray()
     {
         return get_object_vars($this);
+    }
+
+    /**
+     * @return Collection|Character[]
+     */
+    public function getCharacters(): Collection
+    {
+        return $this->characters;
+    }
+
+    public function addCharacter(Character $character): self
+    {
+        if (!$this->characters->contains($character)) {
+            $this->characters[] = $character;
+            $character->setPlayer($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCharacter(Character $character): self
+    {
+        if ($this->characters->removeElement($character)) {
+            // set the owning side to null (unless already changed)
+            if ($character->getPlayer() === $this) {
+                $character->setPlayer(null);
+            }
+        }
+
+        return $this;
     }
 }

@@ -11,18 +11,24 @@ use Symfony\Component\Finder\Finder;
 use LogicException;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class PlayerService implements PlayerServiceInterface
 {
     private $playerRepository;
     private $em;
     private $formFactory;
+    private $validator;
     
-    public function __construct(EntityManagerInterface $em, PlayerRepository $playerRepository, FormFactoryInterface $formFactory)
+    public function __construct(EntityManagerInterface $em,
+    PlayerRepository $playerRepository,
+    FormFactoryInterface $formFactory,
+    ValidatorInterface $validator)
     {
         $this->playerRepository = $playerRepository;
         $this->em = $em;
         $this->formFactory = $formFactory;
+        $this->validator = $validator;
     }
     /**
      * {@inheritdoc}
@@ -43,14 +49,9 @@ class PlayerService implements PlayerServiceInterface
     }
     public function isEntityFilled(Player $player)
     {
-        if (null === $player->getFirstname() ||
-            null === $player->getLastname() ||
-            null === $player->getEmail() ||
-            null === $player->getMirian() ||
-            null === $player->getIdentifier() ||
-            null === $player->getCreation() ||
-            null === $player->getModification()) {
-            throw new UnprocessableEntityHttpException('Missing data for Entity -> ' . json_encode($character->toArray()));
+        $errors = $this->validator->validate($player);
+        if (count($errors) > 0) {
+            throw new UnprocessableEntityHttpException((string) $errors . 'Missing data for Entity -> ' . json_encode($player->toArray()));
         }
     }
      /**
