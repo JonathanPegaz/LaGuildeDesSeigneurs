@@ -63,10 +63,10 @@ class CharacterController extends AbstractController
     * methods={"PUT", "HEAD"}
     * )
     */
-    public function modify(Character $character)
+    public function modify(Request $request, Character $character)
     {
         $this->denyAccessUnlessGranted('characterModify', $character);
-        $character = $this->characterService->modify($character);
+        $character = $this->characterService->modify($character, $request->getContent());
         return new JsonResponse($character->toArray());
     }
     //DELETE
