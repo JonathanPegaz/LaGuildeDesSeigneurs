@@ -31,7 +31,7 @@ class Player
     private $firstname;
 
     /**
-     * @ORM\Column(type="string", length=64)
+     * @ORM\Column(type="string", length=64, name="gls_firstname")
      * @Assert\NotBlank
     * @Assert\Length(
     *   min = 3,
@@ -41,7 +41,7 @@ class Player
     private $lastname;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, name="gls_lastname")
      * @Assert\NotBlank
     * @Assert\Length(
     *   min = 3,
@@ -51,22 +51,22 @@ class Player
     private $email;
 
     /**
-     * @ORM\Column(type="integer", nullable=true)
+     * @ORM\Column(type="integer", nullable=true, , name="gls_email")
      */
     private $mirian;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="datetime", name="gls_mirian")
      */
     private $creation;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="datetime", name="gls_creation")
      */
     private $modification;
 
     /**
-     * @ORM\Column(type="string", length=40)
+     * @ORM\Column(type="string", length=40, name="gls_modification")
     * @Assert\Length(
     *   min = 5,
     *   max = 128,
@@ -75,7 +75,7 @@ class Player
     private $identifier;
 
     /**
-     * @ORM\OneToMany(targetEntity=Character::class, mappedBy="player")
+     * @ORM\OneToMany(targetEntity=Character::class, mappedBy="player", name="gls_characters")
      */
     private $characters;
 
