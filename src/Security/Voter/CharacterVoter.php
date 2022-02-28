@@ -24,9 +24,9 @@ class CharacterVoter extends Voter
         self::CHARACTER_DELETE,
     );
 
-    protected function supports($attribute, $subject) :bool
+    protected function supports($attribute, $subject): bool
     {
-        if(null !== $subject) {
+        if (null !== $subject) {
             return $subject instanceof Character && in_array($attribute, self::ATTRIBUTES);
         }
         return in_array($attribute, self::ATTRIBUTES);
@@ -34,7 +34,7 @@ class CharacterVoter extends Voter
 
     protected function voteOnAttribute(string $attribute, $subject, TokenInterface $token): bool
     {
-        switch ($attribute){
+        switch ($attribute) {
             case self::CHARACTER_CREATE:
                 return $this->canCreate();
                 break;
@@ -55,29 +55,32 @@ class CharacterVoter extends Voter
     /**
      * Checks if is alloawed to create
      */
-    private function canCreate(){
+    private function canCreate()
+    {
         return true;
     }
 
     /**
      * Checks if is alloawed to display
      */
-    private function canDisplay(){
+    private function canDisplay()
+    {
         return true;
     }
 
     /**
     * Checks if is allowed to modify
     */
-    private function canModify(){
+    private function canModify()
+    {
         return true;
     }
 
     /**
     * Checks if is allowed to delete
     */
-    private function canDelete(){
+    private function canDelete()
+    {
         return true;
     }
-
 }

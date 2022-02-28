@@ -13,7 +13,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 
 class PlayerController extends AbstractController
 {
-
     private $playerService;
 
     public function __construct(PlayerServiceInterface $playerService)
@@ -24,7 +23,8 @@ class PlayerController extends AbstractController
     /**
      * @Route("/player", name="player_redirect_index", methods={"GET","HEAD"})
      */
-    public function redirectIndex(){
+    public function redirectIndex()
+    {
         return $this->redirectToRoute('player_index');
     }
 
@@ -42,7 +42,7 @@ class PlayerController extends AbstractController
      * @Route("/player/display/{identifier}", name="player_display", requirements={"identifier": "^([a-z0-9]{40})$"}, methods={"GET","HEAD"})
      * @Entity("player", expr="repository.findOneByIdentifier(identifier)")
      */
-    public function display(Player $player) 
+    public function display(Player $player)
     {
         $this->denyAccessUnlessGranted('playerDisplay', $player);
         return JsonResponse::fromJsonString($this->playerService->serializeJson($player));
@@ -51,7 +51,7 @@ class PlayerController extends AbstractController
     /**
      * @Route("/player/create", name="player_create", methods={"POST","HEAD"})
      */
-    public function create(Request $request) 
+    public function create(Request $request)
     {
         $this->denyAccessUnlessGranted('playerCreate', null);
         $player = $this->playerService->create($request->getContent());
@@ -60,7 +60,7 @@ class PlayerController extends AbstractController
     //MODIFY
     /**
     * @Route("/player/modify/{identifier}",
-    * name="player_modify", 
+    * name="player_modify",
     * requirements={"identifier": "^([a-z0-9]{40})$"},
     * methods={"PUT", "HEAD"}
     * )
@@ -74,16 +74,15 @@ class PlayerController extends AbstractController
     //DELETE
     /**
     * @Route("/player/delete/{identifier}",
-    * name="player_delete", 
+    * name="player_delete",
     * requirements={"identifier": "^([a-z0-9]{40})$"},
     * methods={"DELETE", "HEAD"}
     * )
     */
-    public function delete(Player $player)
+    public function delete(Player $player): Response
     {
-        $this->denyAccessUnlessGranted('playerModify', $player);
+        $this->denyAccessUnlessGranted('playerDelete', $player);
         $player = $this->playerService->delete($player);
         return new JsonResponse(array('delete' => $response));
     }
-
 }

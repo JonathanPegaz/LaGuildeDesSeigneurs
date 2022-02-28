@@ -12,7 +12,6 @@ use Symfony\Component\HttpFoundation\Request;
 
 class CharacterController extends AbstractController
 {
-
     private $characterService;
 
     public function __construct(CharacterServiceInterface $characterService)
@@ -23,14 +22,15 @@ class CharacterController extends AbstractController
     /**
      * @Route("/character", name="character_redirect_index", methods={"GET","HEAD"})
      */
-    public function redirectIndex(){
+    public function redirectIndex(): Response
+    {
         return $this->redirectToRoute('character_index');
     }
 
     /**
      * @Route("/character/index", name="character_index", methods={"GET","HEAD"})
      */
-    public function index()
+    public function index(): Response
     {
         $this->denyAccessUnlessGranted('characterIndex', null);
         $characters = $this->characterService->getAll();
@@ -40,7 +40,7 @@ class CharacterController extends AbstractController
     /**
      * @Route("/character/display/{identifier}", name="character_display", requirements={"identifier": "^([a-z0-9]{40})$"}, methods={"GET","HEAD"})
      */
-    public function display(Character $character) 
+    public function display(Character $character)
     {
         $this->denyAccessUnlessGranted('characterDisplay', $character);
         return new JsonResponse($character->toArray());
@@ -49,7 +49,7 @@ class CharacterController extends AbstractController
     /**
      * @Route("/character/create", name="character_create", methods={"POST","HEAD"})
      */
-    public function create(Request $request) 
+    public function create(Request $request)
     {
         $this->denyAccessUnlessGranted('characterCreate', null);
         $character = $this->characterService->create($request->getContent());
@@ -58,7 +58,7 @@ class CharacterController extends AbstractController
     //MODIFY
     /**
     * @Route("/character/modify/{identifier}",
-    * name="character_modify", 
+    * name="character_modify",
     * requirements={"identifier": "^([a-z0-9]{40})$"},
     * methods={"PUT", "HEAD"}
     * )
@@ -72,12 +72,12 @@ class CharacterController extends AbstractController
     //DELETE
     /**
     * @Route("/character/delete/{identifier}",
-    * name="character_delete", 
+    * name="character_delete",
     * requirements={"identifier": "^([a-z0-9]{40})$"},
     * methods={"DELETE", "HEAD"}
     * )
     */
-    public function delete(Character $character)
+    public function delete(Character $character): Response
     {
         $this->denyAccessUnlessGranted('characterModify', $character);
         $character = $this->characterService->delete($character);
@@ -98,7 +98,4 @@ class CharacterController extends AbstractController
         $this->denyAccessUnlessGranted('characterIndex', null);
         return new JsonResponse($this->characterService->getImagesKind($kind, $number));
     }
-
-
-
 }

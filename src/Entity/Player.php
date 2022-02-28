@@ -9,7 +9,6 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Table(name="player")
  * @ORM\Entity(repositoryClass=PlayerRepository::class)
  */
 class Player
@@ -53,20 +52,11 @@ class Player
 
     /**
      * @ORM\Column(type="integer", nullable=true)
-     * @Assert\NotBlank
-    * @Assert\Length(
-    *   min = 3,
-    *   max = 64,
-    *)
      */
     private $mirian;
 
     /**
      * @ORM\Column(type="datetime")
-     * @Assert\Length(
-    *   min = 5,
-    *   max = 128,
-    *)
      */
     private $creation;
 
@@ -77,6 +67,10 @@ class Player
 
     /**
      * @ORM\Column(type="string", length=40)
+    * @Assert\Length(
+    *   min = 5,
+    *   max = 128,
+    *)
      */
     private $identifier;
 

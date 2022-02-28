@@ -15,7 +15,9 @@ class CharacterControllerTest extends WebTestCase
     {
         $response = $this->client->getResponse();
         $this->content = json_decode($response->getContent(), true, 50);
-        //...
+
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertTrue($response->headers->contains('Content-Type', 'application/json'), $response->headers);
     }
     /**
      * Asserts that 'identifier' is present in the Response

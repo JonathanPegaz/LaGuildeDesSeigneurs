@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Service;
+
 use App\Form\PlayerType;
 
 use DateTime;
@@ -24,11 +25,13 @@ class PlayerService implements PlayerServiceInterface
     private $em;
     private $formFactory;
     private $validator;
-    
-    public function __construct(EntityManagerInterface $em,
-    PlayerRepository $playerRepository,
-    FormFactoryInterface $formFactory,
-    ValidatorInterface $validator)
+
+    public function __construct(
+        EntityManagerInterface $em,
+        PlayerRepository $playerRepository,
+        FormFactoryInterface $formFactory,
+        ValidatorInterface $validator
+    )
     {
         $this->playerRepository = $playerRepository;
         $this->em = $em;
@@ -38,30 +41,32 @@ class PlayerService implements PlayerServiceInterface
     /**
      * {@inheritdoc}
      */
-    public function create(string $data){
-        $player = new player();
+    public function create(string $data)
+    {
+        //Use with {"firstname":"Eldalótë","lastname":"Fleur","email":"elfe@trap.com","mirian":"500"}
+        $player = new Player();
         $player
+        ->setIdentifier(hash('sha1', uniqid()))
         ->setCreation(new \DateTime())
         ->setModification(new \DateTime())
-        ->setIdentifier(hash('sha1', uniqid()))
     ;
-    $this->submit($player, PlayerType::class, $data);
-    $this->isEntityFilled($player);
+        $this->submit($player, PlayerType::class, $data);
+        $this->isEntityFilled($player);
 
-    $this->em->persist($player);
-    $this->em->flush();
-    return $player;
+        $this->em->persist($player);
+        $this->em->flush();
+        return $player;
     }
     public function isEntityFilled(Player $player)
     {
         $errors = $this->validator->validate($player);
         if (count($errors) > 0) {
-            throw new UnprocessableEntityHttpException((string) $errors . 'Missing data for Entity -> ' . json_encode($this->serializeJson($player)));
+            throw new UnprocessableEntityHttpException((string) $errors . 'Missing data for Entity -> ' . $this->serializeJson($player));
         }
     }
-     /**
-     * {@inheritdoc}
-     */
+    /**
+    * {@inheritdoc}
+    */
     public function submit(Player $player, $formName, $data)
     {
         $dataArray = is_array($data) ? $data : json_decode($data, true);
@@ -85,7 +90,8 @@ class PlayerService implements PlayerServiceInterface
     /**
      * {@inheritdoc}
      */
-    public function getAll() {
+    public function getAll()
+    {
     }
 
     /**

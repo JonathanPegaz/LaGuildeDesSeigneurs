@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Service;
+
 use App\Form\CharacterType;
 
 use DateTime;
@@ -19,11 +20,13 @@ class CharacterService implements CharacterServiceInterface
     private $em;
     private $formFactory;
     private $validator;
-    
-    public function __construct(EntityManagerInterface $em,
-    CharacterRepository $characterRepository,
-    FormFactoryInterface $formFactory,
-    ValidatorInterface $validator)
+
+    public function __construct(
+        EntityManagerInterface $em,
+        CharacterRepository $characterRepository,
+        FormFactoryInterface $formFactory,
+        ValidatorInterface $validator
+    )
     {
         $this->characterRepository = $characterRepository;
         $this->em = $em;
@@ -54,7 +57,7 @@ class CharacterService implements CharacterServiceInterface
     {
         $errors = $this->validator->validate($character);
         if (count($errors) > 0) {
-            throw new UnprocessableEntityHttpException((string) $errors .'Missing data for Entity -> ' . json_encode($character->toArray()));
+            throw new UnprocessableEntityHttpException((string) $errors .'Missing data for Entity -> ' . $this->serializeJson($character));
         }
     }
     /**
@@ -83,7 +86,8 @@ class CharacterService implements CharacterServiceInterface
     /**
      * {@inheritdoc}
      */
-    public function getAll() {
+    public function getAll()
+    {
         $charactersFinal = array();
         $characters = $this->characterRepository->findAll();
         foreach ($characters as $character) {
