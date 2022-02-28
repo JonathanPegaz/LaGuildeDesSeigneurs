@@ -124,6 +124,9 @@
     "phpspec/prophecy": {
         "version": "v1.15.0"
     },
+    "phpstan/phpdoc-parser": {
+        "version": "1.2.0"
+    },
     "phpunit/php-code-coverage": {
         "version": "9.2.10"
     },
@@ -276,6 +279,9 @@
     "symfony/event-dispatcher-contracts": {
         "version": "v2.5.0"
     },
+    "symfony/expression-language": {
+        "version": "v5.4.3"
+    },
     "symfony/filesystem": {
         "version": "v5.4.3"
     },
@@ -406,6 +412,9 @@
     },
     "symfony/security-http": {
         "version": "v5.4.3"
+    },
+    "symfony/serializer": {
+        "version": "v5.4.5"
     },
     "symfony/service-contracts": {
         "version": "v2.5.0"
