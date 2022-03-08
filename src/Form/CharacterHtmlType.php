@@ -30,7 +30,7 @@ class CharacterHtmlType extends AbstractType
                  'max' => 250,
                 ),
             ))
-            >add('life', IntegerType::class, array(
+            ->add('life', IntegerType::class, array(
                 'required' => false,
                 'label' => 'Niveau de vie',
                 'attr' => array(

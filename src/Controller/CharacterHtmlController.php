@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Character;
 use App\Form\CharacterHtmlType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -16,10 +17,12 @@ use App\Service\CharacterServiceInterface;
 class CharacterHtmlController extends AbstractController
 {
     private $characterService;
+    private $em;
 
-    public function __construct(CharacterServiceInterface $characterService)
+    public function __construct(EntityManagerInterface $em, CharacterServiceInterface $characterService)
     {
         $this->characterService = $characterService;
+        $this->em = $em;
     }
     /**
      * @Route("/", name="character_html_index", methods={"GET"})
