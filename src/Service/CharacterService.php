@@ -111,6 +111,12 @@ class CharacterService implements CharacterServiceInterface
     public function modify(Character $character, string $data)
     {
         $this->submit($character, CharacterType::class, $data);
+        return $this->modifyFromHtml($character);
+        
+    }
+
+    public function modifyFromHtml(Character $character)
+    {
         $this->isEntityFilled($character);
         $character
         ->setModification(new \DateTime())

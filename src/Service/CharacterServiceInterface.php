@@ -38,4 +38,8 @@ interface CharacterServiceInterface
     * Creates the character from html form
     */
     public function createFromHtml(Character $character);
+    /**
+    * Modifies the character from html form
+    */
+    public function modifyFromHtml(Character $character);
 }
