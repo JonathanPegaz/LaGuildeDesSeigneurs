@@ -21,6 +21,7 @@
         "symfony/asset": "^5",
         "symfony/console": "5.4.*",
         "symfony/dotenv": "5.4.*",
+        "symfony/event-dispatcher": "^5",
         "symfony/expression-language": "5.4.*",
         "symfony/finder": "5.4.*",
         "symfony/flex": "^1.17|^2",
