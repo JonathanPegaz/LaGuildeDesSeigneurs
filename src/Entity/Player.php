@@ -22,61 +22,46 @@ class Player
 
     /**
      * @ORM\Column(type="string", length=64)
-     * @Assert\NotBlank
-    * @Assert\Length(
-    *   min = 3,
-    *   max = 64,
-    *)
      */
     private $firstname;
 
     /**
-     * @ORM\Column(type="string", length=64, name="gls_firstname")
-     * @Assert\NotBlank
-    * @Assert\Length(
-    *   min = 3,
-    *   max = 64,
-    *)
+     * @ORM\Column(type="string", length=64)
      */
     private $lastname;
 
     /**
-     * @ORM\Column(type="string", length=255, name="gls_lastname")
-     * @Assert\NotBlank
-    * @Assert\Length(
-    *   min = 3,
-    *   max = 255,
-    *)
+     * @ORM\Column(type="string", length=255)
      */
     private $email;
 
     /**
-     * @ORM\Column(type="integer", nullable=true, , name="gls_email")
+     * @ORM\Column(type="integer", nullable=true)
      */
     private $mirian;
 
     /**
-     * @ORM\Column(type="datetime", name="gls_mirian")
+     * @ORM\Column(type="datetime")
      */
     private $creation;
 
     /**
-     * @ORM\Column(type="datetime", name="gls_creation")
+     * @ORM\Column(type="datetime")
      */
     private $modification;
 
     /**
-     * @ORM\Column(type="string", length=40, name="gls_modification")
+    * @ORM\Column(type="string", length=40, name="gls_modification")
     * @Assert\Length(
     *   min = 5,
     *   max = 128,
     *)
-     */
+    */
     private $identifier;
 
     /**
-     * @ORM\OneToMany(targetEntity=Character::class, mappedBy="player", name="gls_characters")
-     */
+    * @ORM\OneToMany(targetEntity=Character::class, mappedBy="player")
+    */
     private $characters;
 
     public function __construct()

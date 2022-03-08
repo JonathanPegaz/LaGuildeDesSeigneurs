@@ -10,6 +10,8 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use App\Service\PlayerServiceInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
+use Nelmio\ApiDocBundle\Annotation\Model;
+use OpenApi\Annotations as OA;
 
 class PlayerController extends AbstractController
 {
@@ -22,6 +24,9 @@ class PlayerController extends AbstractController
 
     /**
      * @Route("/player", name="player_redirect_index", methods={"GET","HEAD"})
+     *  Redirects to index Route
+     *  @OA\Response(response=302,description="Redirect")
+     *  @OA\Tag(name="Player")
      */
     public function redirectIndex()
     {
@@ -30,6 +35,14 @@ class PlayerController extends AbstractController
 
     /**
      * @Route("/player/index", name="player_index", methods={"GET","HEAD"})
+     *  Displays available Players
+     *  @OA\Response(response=200,description="Success",
+     *      @OA\Schema(type="array",
+     *          @OA\Items(ref=@Model(type=Player::class))
+     *      )
+     *  )
+     *  @OA\Response(response=403,description="Access denied")
+     *  @OA\Tag(name="Player")
      */
     public function index()
     {
@@ -41,6 +54,12 @@ class PlayerController extends AbstractController
     /**
      * @Route("/player/display/{identifier}", name="player_display", requirements={"identifier": "^([a-z0-9]{40})$"}, methods={"GET","HEAD"})
      * @Entity("player", expr="repository.findOneByIdentifier(identifier)")
+     *  Displays the Player
+     *  @OA\Parameter(name="identifier",in="path",description="identifier for the Player",required=true)
+     *  @OA\Response(response=200,description="Success",@Model(type=Player::class))
+     *  @OA\Response(response=403,description="Access denied")
+     *  @OA\Response(response=404,description="Not Found")
+     *  @OA\Tag(name="Player")
      */
     public function display(Player $player)
     {
@@ -50,6 +69,15 @@ class PlayerController extends AbstractController
 
     /**
      * @Route("/player/create", name="player_create", methods={"POST","HEAD"})
+     *  Creates the Player
+     *  @OA\Response(response=200,description="Success",@Model(type=Player::class))
+     *  @OA\Response(response=403,description="Access denied")
+     *  @OA\RequestBody(request="Player",description="Data for the Player",required=true,
+     *      @OA\MediaType(mediaType="application/json",
+     *      @OA\Schema(ref="#/components/schemas/Player")
+     *      )
+     *  )
+     *  @OA\Tag(name="Player")
      */
     public function create(Request $request)
     {
@@ -64,6 +92,16 @@ class PlayerController extends AbstractController
     * requirements={"identifier": "^([a-z0-9]{40})$"},
     * methods={"PUT", "HEAD"}
     * )
+    *  Modifies the Player
+    *  @OA\Response(response=200,description="Success",@Model(type=Player::class))
+    *  @OA\Response(response=403,description="Access denied",)
+    *  @OA\Parameter(name="identifier",in="path",description="identifier for the Player",required=true)
+    *  @OA\RequestBody(request="Player",description="Data for the Player",required=true,
+    *      @OA\MediaType(mediaType="application/json",
+    *          @OA\Schema(ref="#/components/schemas/Player")
+    *      )
+    *  )
+    *  @OA\Tag(name="Player")
     */
     public function modify(Request $request, Player $player)
     {
@@ -78,6 +116,14 @@ class PlayerController extends AbstractController
     * requirements={"identifier": "^([a-z0-9]{40})$"},
     * methods={"DELETE", "HEAD"}
     * )
+    *  @OA\Response(response=200,description="Success",
+    *      @OA\Schema(
+    *          @OA\Property(property="delete", type="boolean")
+    *      )
+    *  )
+    *  @OA\Response(response=403,description="Access denied")*
+    *  @OA\Parameter(name="identifier",in="path",description="identifier for the Player",required=true)
+    *  @OA\Tag(name="Player")
     */
     public function delete(Player $player): Response
     {

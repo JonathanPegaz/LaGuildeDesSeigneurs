@@ -40,7 +40,7 @@ class Character
     private $surname;
 
     /**
-     * @ORM\Column(type="string", length=16, nullable=true, name="gls_caste")
+    * @ORM\Column(type="string", length=16, nullable=true, name="gls_caste")
     * @Assert\Length(
     *   min = 3,
     *   max = 16,
@@ -49,7 +49,7 @@ class Character
     private $caste;
 
     /**
-     * @ORM\Column(type="string", length=16, nullable=true, name="gls_knowledge")
+    * @ORM\Column(type="string", length=16, nullable=true, name="gls_knowledge")
     * @Assert\Length(
     *   min = 3,
     *   max = 16,
@@ -77,7 +77,7 @@ class Character
     private $image;
 
     /**
-     * @ORM\Column(type="string", length=16, name="gls_kind")
+    * @ORM\Column(type="string", length=16, name="gls_kind")
     * @Assert\NotBlank
     * @Assert\Length(
     *   min = 3,
@@ -92,7 +92,7 @@ class Character
     private $creation;
 
     /**
-     * @ORM\Column(type="string", length=40, name="gls_identifier")
+    * @ORM\Column(type="string", length=40, name="gls_identifier")
     * @Assert\Length(
     *   min = 40,
     *   max = 40,
@@ -101,12 +101,12 @@ class Character
     private $identifier;
 
     /**
-     * @ORM\Column(type="datetime", name="gls_modification)
+     * @ORM\Column(type="datetime", name="gls_modification")
      */
     private $modification;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Player::class, inversedBy="characters", name="gls_player")
+     * @ORM\ManyToOne(targetEntity=Player::class, inversedBy="characters")
      */
     private $player;
 
