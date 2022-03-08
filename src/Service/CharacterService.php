@@ -44,21 +44,8 @@ class CharacterService implements CharacterServiceInterface
     {
         //Use with {"kind":"Dame","name":"Eldalótë","surname":"Fleur elfique","caste":"Elfe","knowledge":"Arts","intelligence":120,"life":12,"image":"/images/eldalote.jpg"}
         $character = new Character();
-        $character
-            ->setIdentifier(hash('sha1', uniqid()))
-            ->setCreation(new DateTime())
-            ->setModification(new DateTime())
-        ;
         $this->submit($character, CharacterType::class, $data);
-
-        $event = new CharacterEvent($character);
-        $this->dispatcher->dispatch($event, CharacterEvent::CHARACTER_CREATED);
-        $this->isEntityFilled($character);
-
-        $this->em->persist($character);
-        $this->em->flush();
-
-        return $character;
+        return $this->createFromHtml($character);
     }
     public function isEntityFilled(Character $character)
     {
@@ -67,6 +54,21 @@ class CharacterService implements CharacterServiceInterface
             throw new UnprocessableEntityHttpException((string) $errors .'Missing data for Entity -> ' . $this->serializeJson($character));
         }
     }
+    public function createFromHtml(Character $character)
+    {
+        $character
+            ->setIdentifier(hash('sha1', uniqid()))
+            ->setCreation(new DateTime())
+            ->setModification(new DateTime())
+        ;
+        //Dispatch event
+        $event = new CharacterEvent($character);
+        $this->dispatcher->dispatch($event, CharacterEvent::CHARACTER_CREATED);
+        $this->isEntityFilled($character);
+        $this->em->persist($character);
+        $this->em->flush();
+        return $character;
+        }
     /**
      * {@inheritdoc}
      */
