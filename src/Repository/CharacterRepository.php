@@ -11,6 +11,7 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method Character|null findOneBy(array $criteria, array $orderBy = null)
  * @method Character[]    findAll()
  * @method Character[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method Character[]    getAboveIntelligence(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
 class CharacterRepository extends ServiceEntityRepository
 {
@@ -47,4 +48,18 @@ class CharacterRepository extends ServiceEntityRepository
         ;
     }
     */
+
+    /**
+    * @return Character[] Returns an array of Character objects
+    */
+    public function getAboveIntelligence($intelligence)
+    {
+        $qb = $this->createQueryBuilder('c')
+            ->where('c.intelligence >= :intelligence')
+            ->setParameter('intelligence', $intelligence);
+
+        $query = $qb->getQuery();
+
+        return $query->execute();
+    }
 }
