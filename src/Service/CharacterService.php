@@ -160,4 +160,19 @@ class CharacterService implements CharacterServiceInterface
     {
         return $this->getImages($number, $kind);
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getAboveIntelligence(int $number)
+    {
+        $charactersFinal = array();
+        $characters = $this->characterRepository->findAll();
+        foreach ($characters as $character) {
+            if($character->getIntelligence() >= $number) {
+                $charactersFinal[] = $character->toArray();
+            }
+        }
+        return $charactersFinal;
+    }
 }

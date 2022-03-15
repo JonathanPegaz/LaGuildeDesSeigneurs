@@ -108,4 +108,15 @@ class CharacterApiHtmlController extends AbstractController
 
         return $this->redirectToRoute('character_api_html_index', [], Response::HTTP_SEE_OTHER);
     }
+
+     /**
+     * @Route("/intelligence/{intelligence}", name="character_api_html_intelligence", methods={"GET"})
+     */
+    public function intelligenceIndex(int $intelligence)
+    {
+        $response = $this->client->request('GET','http://api.la-guilde-des-seigneurs.com/character/intelligence/' . $intelligence);
+        return $this->render('character_api_html/index.html.twig', [
+            'characters' => $response->toArray(),
+        ]);
+    }
 }

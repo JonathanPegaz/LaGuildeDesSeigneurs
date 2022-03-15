@@ -195,4 +195,35 @@ class CharacterController extends AbstractController
         $this->denyAccessUnlessGranted('characterIndex', null);
         return new JsonResponse($this->characterService->getImagesKind($kind, $number));
     }
+
+    /**
+     * @Route("/character/intelligence/{intelligence}", name="character_intelligence", requirements={"intelligence": "^([0-9]{0,3})$"}, methods={"GET","HEAD"})
+     * 
+     * @OA\Parameter(
+     *      name="intelligence",
+     *      in="path",
+     *      description="intelligence for the Character",
+     *      required=true,
+     * )
+     * @OA\Response(
+     *      response=200,
+     *      description="Success",
+     *      @Model(type=Character::class),
+     * )
+     * @OA\Response(
+     *      response=403,
+     *      description="Access denied",
+     * )
+     * @OA\Response(
+     *      response=404,
+     *      description="Not Found",
+     * )
+     * @OA\Tag(name= "Character")
+     */
+    public function getAboveIntelligence(int $intelligence)
+    {
+        $this->denyAccessUnlessGranted('characterIndex', null);
+        $characters = $this->characterService->getAboveIntelligence($intelligence);
+        return new JsonResponse($characters);
+    }
 }

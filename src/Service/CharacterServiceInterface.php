@@ -23,6 +23,10 @@ interface CharacterServiceInterface
      */
     public function getAll();
     /**
+     * Gets the characters who have the intelligence equal supérioir
+     */
+    public function getAboveIntelligence(int $number);
+    /**
     * Modifies the character
     */
     public function modify(Character $character, string $data);
