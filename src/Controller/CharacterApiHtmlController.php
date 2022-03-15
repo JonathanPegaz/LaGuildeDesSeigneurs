@@ -27,7 +27,7 @@ class CharacterApiHtmlController extends AbstractController
      */
     public function index(): Response
     {
-        $response = $this->client->request('GET','http://localhost:8000/character/index');
+        $response = $this->client->request('GET','http://api.la-guilde-des-seigneurs.com/character/index');
         return $this->render('character_api_html/index.html.twig', [
             'characters' => $response->toArray(),
         ]);
@@ -44,7 +44,7 @@ class CharacterApiHtmlController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $response = $this->client->request('POST','http://localhost:8000/character/create',
+            $response = $this->client->request('POST','http://api.la-guilde-des-seigneurs.com/character/create',
             ['json' => $request->request->all()['character_api_html'],]);
 
             return $this->redirectToRoute('character_api_html_show', array(
@@ -63,7 +63,7 @@ class CharacterApiHtmlController extends AbstractController
      */
     public function show(string $identifier): Response
     {
-        $response = $this->client->request('GET','http://localhost/character/display/' . $identifier);
+        $response = $this->client->request('GET','http://api.la-guilde-des-seigneurs.com/character/display/' . $identifier);
         return $this->render('character_api_html/show.html.twig', [
             'character' => $response->toArray(),
         ]);
@@ -74,13 +74,13 @@ class CharacterApiHtmlController extends AbstractController
      */
     public function edit(Request $request, string $identifier): Response
     {
-        $response = $this->client->request('GET','http://localhost:8000/character/display/' . $identifier);
+        $response = $this->client->request('GET','http://api.la-guilde-des-seigneurs.com/character/display/' . $identifier);
         $character = $response->toArray();
         $form = $this->createForm(CharacterApiHtmlType::class, $character);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->client->request('PUT','http://localhost:8000/character/modify/' . $identifier,
+            $this->client->request('PUT','http://api.la-guilde-des-seigneurs.com/character/modify/' . $identifier,
             [
                 'json' => $request->request->all()['character_api_html'],
                 'body' => json_encode($request->request->all()['character_api_html']),
@@ -103,7 +103,7 @@ class CharacterApiHtmlController extends AbstractController
     public function delete(Request $request, string $identifier): Response
     {
         if ($this->isCsrfTokenValid('delete'.$character->getIdentifier(), $request->request->get('_token'))) {
-            $this->client->request('DELETE','http://localhost:8000/character/delete/' . $identifier,);
+            $this->client->request('DELETE','http://api.la-guilde-des-seigneurs.com/character/delete/' . $identifier,);
         }
 
         return $this->redirectToRoute('character_api_html_index', [], Response::HTTP_SEE_OTHER);
