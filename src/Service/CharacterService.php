@@ -15,6 +15,11 @@ use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use App\Event\CharacterEvent;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\Serializer\Encoder\JsonEncoder;
+use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
+use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
+use Symfony\Component\Serializer\Serializer;
 
 class CharacterService implements CharacterServiceInterface
 {
@@ -166,13 +171,18 @@ class CharacterService implements CharacterServiceInterface
      */
     public function getAboveIntelligence(int $number)
     {
-        $charactersFinal = array();
-        $characters = $this->characterRepository->findAll();
-        foreach ($characters as $character) {
-            if($character->getIntelligence() >= $number) {
-                $charactersFinal[] = $character->toArray();
-            }
-        }
-        return $charactersFinal;
+        return $this->characterRepository->getAboveIntelligence($number);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function serializeJson($data)
+    {
+        $encoders = new JsonEncoder();
+        $defaultContext = [AbstractNormalizer::CIRCULAR_REFERENCE_HANDLER => fn ($data) => $data->getIdentifier(),];
+        $normalizers = new ObjectNormalizer(null, null, null, null, null, null, $defaultContext);
+        $serializer = new Serializer([new DateTimeNormalizer(), $normalizers], [$encoders]);
+        return $serializer->serialize($data, 'json');
     }
 }

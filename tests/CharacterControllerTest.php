@@ -72,6 +72,13 @@ class CharacterControllerTest extends WebTestCase
         $this->assertTrue($response->headers->contains('Content-Type', 'application/json'), $response->headers);
     }
 
+    public function testGetAboveIntelligence()
+    {
+        $this->client->request('GET', '/character/intelligence/200');
+        $response = $this->client->getResponse();
+        $this->assertEquals(200, $response->getStatusCode());
+    }
+
     /**
      * Tests display
      */
@@ -169,6 +176,5 @@ class CharacterControllerTest extends WebTestCase
         $this->client->request('GET', '/character/images/dame/3');
         $this->assertJsonResponse();
     }
-
 
 }

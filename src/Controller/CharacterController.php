@@ -224,6 +224,7 @@ class CharacterController extends AbstractController
     {
         $this->denyAccessUnlessGranted('characterIndex', null);
         $characters = $this->characterService->getAboveIntelligence($intelligence);
-        return new JsonResponse($characters);
+
+        return JsonResponse::fromJsonString($this->characterService->serializeJson($characters));
     }
 }

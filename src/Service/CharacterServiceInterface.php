@@ -46,4 +46,8 @@ interface CharacterServiceInterface
     * Modifies the character from html form
     */
     public function modifyFromHtml(Character $character);
+    /**
+     * Serialize the object(s)
+     */
+    public function serializeJson($data);
 }
