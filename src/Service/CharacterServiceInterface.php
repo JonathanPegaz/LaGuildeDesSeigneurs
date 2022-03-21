@@ -50,4 +50,18 @@ interface CharacterServiceInterface
      * Serialize the object(s)
      */
     public function serializeJson($data);
+    /*
+    * Gets the characters by Life
+    */
+    public function getByLife( string $data);
+
+    /*
+    * Gets the characters by Knowledge
+    */
+    public function getByKnowledge( string $data);
+
+    /*
+    * Gets the characters by Caste
+    */
+    public function getByCaste( string $data);
 }

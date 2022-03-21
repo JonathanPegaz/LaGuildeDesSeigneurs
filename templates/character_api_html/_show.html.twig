@@ -1,0 +1,15 @@
+{% set gender = 'masculine' %}
+{% if character.kind == 'Dame' or character.kind == 'Ennemie' %}
+	{% set gender = 'feminine' %}
+{% endif %}
+
+<table class="table">
+		<tbody>
+			<div class="card" style="width: 18rem;">
+				<h1>{{ character.name }}</h1>
+				<img class="card-img-top" src="{{ character.image }}" alt="Card image cap">
+				<div class="card-body">
+					<p class="card-text">{{ character.name }} est {{ feminisation(gender, 'un') }} {{ character.caste }}, {{ feminisation(gender, 'il') }} est {{ feminisation(gender, 'connu') }} sous le nom de "{{ character.surname }}".</br>{{ feminisation(gender, 'Il') }} a une intelligence de {{ character.intelligence }} et {{ character.life }} points de vie.</br>{{ feminisation(gender, 'Il') }} est {{ feminisation(gender, 'fort') }} dans les {{ character.knowledge }}.</br>{{ feminisation(gender, 'Il') }} a une force de {{ character|force }} points.
+	                </br>{{ feminisation(gender, 'Il') }} fait partie du jeu La Guilde des Seigneurs !</p>
+
+    </div></div></tbody></table></div>

@@ -1,12 +1,17 @@
 {% extends 'base.html.twig' %}
-
 {% block title %}Character{% endblock %}
-
 {% block body %}
     <h1>Character</h1>
 
     <table class="table">
         <tbody>
+
+                {{ include('character_api_html/_show.html.twig') }}
+
+                
+
+
+{# 
             <tr>
                 <th>Id</th>
                 <td>{{ character.id }}</td>
@@ -37,6 +42,7 @@
             </tr>
             <tr>
                 <th>Image</th>
+<img src="{{character.image}}" alt="My Logo" />
                 <td>{{ character.image }}</td>
             </tr>
             <tr>
@@ -54,13 +60,11 @@
             <tr>
                 <th>Modification</th>
                 <td>{{ character.modification ? character.modification|date('Y-m-d H:i:s') : '' }}</td>
-            </tr>
+            </tr> #}
         </tbody>
     </table>
 
     <a href="{{ path('character_api_html_index') }}">back to list</a>
-
     <a href="{{ path('character_api_html_edit', {'identifier': character.identifier}) }}">edit</a>
-
     {{ include('character_api_html/_delete_form.html.twig') }}
 {% endblock %}

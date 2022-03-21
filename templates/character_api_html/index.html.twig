@@ -1,20 +1,28 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Character index{% endblock %}
+{% block title %}Index des personnages - API{% endblock %}
 
 {% block body %}
-    <h1>Character index</h1>
+    <h1>Index des personnages - API</h1>
 {# Table headers #}
-    <table class="table table-hover">
+    <table class="table table-dark table-striped table-hover">
         <thead>
             <tr class="text-center">
                 <th>Kind</th>
                 <th>Name</th>
                 <th>Surname</th>
-                <th>Caste</th>
-                <th>Knowledge</th>
-                <th>Life</th>
-                <th>Intelligence</th>
+                <td>
+                    <a href="{{ path('character_api_html_caste', {'caste': character.caste}) }}">{{ character.caste }}</a>
+                </td>
+                <td>
+                    <a href="{{ path('character_api_html_knowledge', {'knowledge': character.knowledge}) }}">{{ character.knowledge }}</a>
+                </td>
+                <td>                    
+                    <a href="{{ path('character_api_html_life', {'life': character.life}) }}">{{ character.life }}</a>
+                </td>
+                <td>
+                    <a href="{{ path('character_api_html_intelligence', {'intelligence': character.intelligence}) }}">{{ character.intelligence }}</a>
+                </td>
                 <th>Creation</th>
                 <th>Modification</th>
                 <th>actions</th>
@@ -38,7 +46,11 @@
                 <td>{{ character.caste }}</td>
                 <td>{{ character.knowledge }}</td>
                 <td>{{ character.life }}</td>
-                <td>{{ character.intelligence }}</td>
+                <td 
+                {% if ('intelligence' in app.request.uri) %}
+                    class="text-warning"
+                {% endif %}
+                >{{ character.intelligence }}</td>
                 <td>{{ character.creation ? character.creation|date('d/m/Y') : '' }}</td>
                 <td>{{ character.modification ? character.modification|date('d/m/Y') : '' }}</td>
                 <td>
@@ -55,6 +67,6 @@
     </table>
 {# New Character #}
     <p class="text-center">
-        <a href="{{ path('character_api_html_new') }}" class="btn btn-primary">Nouveau Character</a>
+        <a href="{{ path('character_api_html_new') }}" class="btn btn-primary">Nouveau personnage</a>
     </p>
 {% endblock %}

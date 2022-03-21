@@ -109,4 +109,28 @@ class CharacterHtmlController extends AbstractController
             'characters' => $this->characterService->getAboveIntelligence($intelligence),
         ]);
     }
+
+    /** Route('/life/{life}', name: 'app_character_html_life',requirements: ["life" => "^([0-9]{1,3})$"], methods: ['GET'])*/
+    public function indexLife(int $life)
+    {
+        return $this->render('character_html/index.html.twig', [
+            'characters' => $this->characterService->getByLife($life),
+        ]);
+    }
+
+     /** Route('/caste/{caste}', name: 'app_character_html_caste',requirements: ["caste" => "[^/]+"], methods: ['GET']) */
+    public function indexCaste(string $caste)
+    {
+        return $this->render('character_html/index.html.twig', [
+            'characters' => $this->characterService->getByCaste($caste),
+        ]);
+    }
+
+    /** Route('/knowledge/{knowledge}', name: 'app_character_html_knowledge',requirements: ["knowledge" => "[^/]+"], methods: ['GET']) */
+    public function indexKnowledge(string $knowledge)
+    {
+        return $this->render('character_html/index.html.twig', [
+            'characters' => $this->characterService->getByCaste($knowledge),
+        ]);
+    }
 }
